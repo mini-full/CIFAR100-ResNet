@@ -166,9 +166,13 @@ if __name__ == '__main__':
     
     # print lr at every epoch
     @trainer.on(Events.EPOCH_COMPLETED)
-
     def print_lr():
         print("lr = {:.6f}".format(optimizer.param_groups[0]["lr"]))
+
+
+    @trainer.on(Events.EPOCH_COMPLETED)
+    def print_loss():
+        print("loss = {:.6f}".format(trainer.state.metrics['loss']))
 
     trainer.add_event_handler(Events.EPOCH_COMPLETED, logger, model, evaluator, test_loader, pbar)
 
