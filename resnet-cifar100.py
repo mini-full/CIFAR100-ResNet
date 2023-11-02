@@ -98,10 +98,10 @@ if __name__ == '__main__':
     workers = options.workers
     epochs = options.epochs
     lr = options.lr
-    #device = 'cpu' if options.device is None \
-    #    else torch.device('cuda:{}'.format(options.device))
+    device = 'cpu' if options.device is None \
+        else torch.device('cuda:{}'.format(options.device))
 
-    device = 'cuda:0'
+    # device = 'cuda:0'
 
     transform = transforms.Compose([
         transforms.RandomHorizontalFlip(),
@@ -125,7 +125,7 @@ if __name__ == '__main__':
 
     # define model
     model = resnet10(num_classes=100)
-    model.to('cuda')
+    model.to(device)
 
     # define loss and optimizer
     criterion = nn.CrossEntropyLoss()
