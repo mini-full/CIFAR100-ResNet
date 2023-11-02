@@ -74,15 +74,10 @@ def logger(engine, model, evaluator, loader, pbar):
     evaluator.run(loader)
     metrics = evaluator.state.metrics
     avg_accuracy = metrics['accuracy']
-    curr_loss = metrics['loss']
     pbar.log_message(
         "Test Results - Avg accuracy: {:.2f}".format(avg_accuracy)
     )
-    pbar.log_message(
-        "         Cross Entropy Loss: {:.2f}".format(curr_loss)
-    )
     results.append(avg_accuracy)
-    losses.append(curr_loss)
 
 
 if __name__ == '__main__':
@@ -151,7 +146,7 @@ if __name__ == '__main__':
                                         device=device)
 
     evaluator = create_supervised_evaluator(model,
-            metrics={'accuracy': Accuracy(), 'loss': Loss(nn.CrossEntropyLoss())},
+                                            metrics={'accuracy': Accuracy()},
                                             device=device)
 
     # ignite handlers
@@ -167,12 +162,15 @@ if __name__ == '__main__':
     # print lr at every epoch
     @trainer.on(Events.EPOCH_COMPLETED)
     def print_lr():
-        print("lr = {:.6f}".format(optimizer.param_groups[0]["lr"]))
+        print("Learning rate = {:.6f}".format(optimizer.param_groups[0]["lr"]))
 
 
     @trainer.on(Events.EPOCH_COMPLETED)
     def print_loss():
-        print("loss = {:.6f}".format(trainer.state.metrics['loss']))
+        loss = trainer.state.metrics['loss']
+        print("Training loss = {:.6f}".format(loss))
+        losses.append(loss)
+        
 
     trainer.add_event_handler(Events.EPOCH_COMPLETED, logger, model, evaluator, test_loader, pbar)
 
