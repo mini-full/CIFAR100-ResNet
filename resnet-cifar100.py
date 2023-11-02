@@ -83,8 +83,6 @@ def logger(engine, model, evaluator, loader, pbar):
 if __name__ == '__main__':
     parser = configargparse.ArgumentParser()
 
-    parser.add_argument('-c', '--config', required=False,
-                        is_config_file=True, help='config file')
     parser.add_argument('--root', required=False, type=str, default='./data',
                         help='data root path')
     parser.add_argument('--workers', required=False, type=int, default=4,
@@ -123,7 +121,7 @@ if __name__ == '__main__':
                                                shuffle=True, num_workers=workers)
 
     test_set = torchvision.datasets.CIFAR100(root=root, train=False,
-                                            download=True, transform=transform)
+                                            download=False, transform=transform)
 
     test_loader = torch.utils.data.DataLoader(test_set, batch_size=bsize,
                                               shuffle=False, num_workers=workers)
@@ -160,9 +158,9 @@ if __name__ == '__main__':
     # trainer.add_event_handler(Events.EPOCH_STARTED, scheduler)
     
     # print lr at every epoch
-    # @trainer.on(Events.EPOCH_COMPLETED)
-    # def print_lr():
-    #     print("Learning rate = {:.6f}".format(optimizer.param_groups[0]["lr"]))
+    @trainer.on(Events.EPOCH_COMPLETED)
+    def print_lr():
+        print("Learning rate = {:.6f}".format(optimizer.param_groups[0]["lr"]))
 
 
     @trainer.on(Events.EPOCH_COMPLETED)

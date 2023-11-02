@@ -1,4 +1,4 @@
-pytorch-ignite==0.1.1
+pytorch-ignite
 tqdm
 torchvision
 configargparse
