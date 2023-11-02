@@ -5,15 +5,18 @@ import torch.nn as nn
 import torchvision
 import torchvision.transforms as transforms
 
+import pickle
+
 from torchvision.models.resnet import BasicBlock, ResNet
 from ignite.engine import *
-from ignite.metrics import Accuracy
+from ignite.metrics import Accuracy, Loss
 from ignite.metrics import RunningAverage
 from ignite.contrib.handlers import ProgressBar
 
 from ignite.handlers import *
 
 results = []
+losses = []
 
 
 class ResNetCustom(ResNet):
@@ -71,10 +74,15 @@ def logger(engine, model, evaluator, loader, pbar):
     evaluator.run(loader)
     metrics = evaluator.state.metrics
     avg_accuracy = metrics['accuracy']
+    curr_loss = metrics['loss']
     pbar.log_message(
         "Test Results - Avg accuracy: {:.2f}".format(avg_accuracy)
     )
+    pbar.log_message(
+        "         Cross Entropy Loss: {:.2f}".format(curr_loss)
+    )
     results.append(avg_accuracy)
+    losses.append(curr_loss)
 
 
 if __name__ == '__main__':
@@ -143,12 +151,14 @@ if __name__ == '__main__':
                                         device=device)
 
     evaluator = create_supervised_evaluator(model,
-                                            metrics={'accuracy': Accuracy()},
+            metrics={'accuracy': Accuracy(), 'loss': Loss(nn.CrossEntropyLoss())},
                                             device=device)
 
     # ignite handlers
     RunningAverage(output_transform=lambda x: x).attach(trainer, 'loss')
 
+    # log_file = open("./log/output.log", "w")
+    # pbar = ProgressBar(file=log_file)
     pbar = ProgressBar()
     pbar.attach(trainer, metric_names=['loss'])
 
@@ -156,8 +166,9 @@ if __name__ == '__main__':
     
     # print lr at every epoch
     @trainer.on(Events.EPOCH_COMPLETED)
+
     def print_lr():
-        print("lr =", optimizer.param_groups[0]["lr"], sep=" ")
+        print("lr = {:.6f}".format(optimizer.param_groups[0]["lr"]))
 
     trainer.add_event_handler(Events.EPOCH_COMPLETED, logger, model, evaluator, test_loader, pbar)
 
@@ -165,5 +176,14 @@ if __name__ == '__main__':
     t0 = time.time()
     trainer.run(train_loader, max_epochs=epochs)
     t1 = time.time()
+    
     print('Best Accuracy:', max(results))
     print('Total time:', t1 - t0)
+
+    with open("./log/losses", "wb") as fp:
+        pickle.dump(losses, fp)
+    print("Losses successfully written into ./log/losses")
+
+    with open("./log/results", "wb") as fp:
+        pickle.dump(results, fp)
+    print("Results successfully written into ./log/results")
