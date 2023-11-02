@@ -135,10 +135,10 @@ if __name__ == '__main__':
 
     # define loss and optimizer
     criterion = nn.CrossEntropyLoss()
-    optimizer = torch.optim.SGD(model.parameters(), lr=lr, momentum=0.9, weight_decay=0.0001)
-    # optimizer = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=0.0001)
-    torch_lr_scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=[30, 40], gamma = 0.1)
-    scheduler = LRScheduler(torch_lr_scheduler)
+    # optimizer = torch.optim.SGD(model.parameters(), lr=lr, momentum=0.9, weight_decay=0.0001)
+    optimizer = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=0.0001)
+    # torch_lr_scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=[30, 40], gamma = 0.1)
+    # scheduler = LRScheduler(torch_lr_scheduler)
     # create ignite engines
     trainer = create_supervised_trainer(model=model,
                                         optimizer=optimizer,
@@ -157,12 +157,12 @@ if __name__ == '__main__':
     pbar = ProgressBar()
     pbar.attach(trainer, metric_names=['loss'])
 
-    trainer.add_event_handler(Events.EPOCH_STARTED, scheduler)
+    # trainer.add_event_handler(Events.EPOCH_STARTED, scheduler)
     
     # print lr at every epoch
-    @trainer.on(Events.EPOCH_COMPLETED)
-    def print_lr():
-        print("Learning rate = {:.6f}".format(optimizer.param_groups[0]["lr"]))
+    # @trainer.on(Events.EPOCH_COMPLETED)
+    # def print_lr():
+    #     print("Learning rate = {:.6f}".format(optimizer.param_groups[0]["lr"]))
 
 
     @trainer.on(Events.EPOCH_COMPLETED)

@@ -1,0 +1,106 @@
+Files already downloaded and verified
+Files already downloaded and verified
+Training loss = 3.372426
+Test Results - Avg accuracy: 0.19
+Training loss = 2.712515
+Test Results - Avg accuracy: 0.30
+Training loss = 2.337952
+Test Results - Avg accuracy: 0.35
+Training loss = 2.033454
+Test Results - Avg accuracy: 0.35
+Training loss = 1.862144
+Test Results - Avg accuracy: 0.45
+Training loss = 1.704843
+Test Results - Avg accuracy: 0.46
+Training loss = 1.559104
+Test Results - Avg accuracy: 0.49
+Training loss = 1.454487
+Test Results - Avg accuracy: 0.52
+Training loss = 1.361337
+Test Results - Avg accuracy: 0.55
+Training loss = 1.267355
+Test Results - Avg accuracy: 0.52
+Training loss = 1.197267
+Test Results - Avg accuracy: 0.55
+Training loss = 1.133261
+Test Results - Avg accuracy: 0.57
+Training loss = 1.043701
+Test Results - Avg accuracy: 0.60
+Training loss = 1.002791
+Test Results - Avg accuracy: 0.59
+Training loss = 0.944046
+Test Results - Avg accuracy: 0.59
+Training loss = 0.901404
+Test Results - Avg accuracy: 0.61
+Training loss = 0.855378
+Test Results - Avg accuracy: 0.59
+Training loss = 0.821771
+Test Results - Avg accuracy: 0.62
+Training loss = 0.771014
+Test Results - Avg accuracy: 0.61
+Training loss = 0.730446
+Test Results - Avg accuracy: 0.63
+Training loss = 0.689799
+Test Results - Avg accuracy: 0.63
+Training loss = 0.662955
+Test Results - Avg accuracy: 0.62
+Training loss = 0.634061
+Test Results - Avg accuracy: 0.63
+Training loss = 0.595630
+Test Results - Avg accuracy: 0.63
+Training loss = 0.578686
+Test Results - Avg accuracy: 0.64
+Training loss = 0.530758
+Test Results - Avg accuracy: 0.63
+Training loss = 0.523590
+Test Results - Avg accuracy: 0.64
+Training loss = 0.501239
+Test Results - Avg accuracy: 0.63
+Training loss = 0.486497
+Test Results - Avg accuracy: 0.64
+Training loss = 0.456257
+Test Results - Avg accuracy: 0.63
+Training loss = 0.440670
+Test Results - Avg accuracy: 0.64
+Training loss = 0.427689
+Test Results - Avg accuracy: 0.62
+Training loss = 0.406581
+Test Results - Avg accuracy: 0.65
+Training loss = 0.393087
+Test Results - Avg accuracy: 0.62
+Training loss = 0.372739
+Test Results - Avg accuracy: 0.64
+Training loss = 0.365941
+Test Results - Avg accuracy: 0.64
+Training loss = 0.361605
+Test Results - Avg accuracy: 0.64
+Training loss = 0.360017
+Test Results - Avg accuracy: 0.64
+Training loss = 0.355534
+Test Results - Avg accuracy: 0.65
+Training loss = 0.348437
+Test Results - Avg accuracy: 0.65
+Training loss = 0.328408
+Test Results - Avg accuracy: 0.64
+Training loss = 0.313192
+Test Results - Avg accuracy: 0.65
+Training loss = 0.313530
+Test Results - Avg accuracy: 0.64
+Training loss = 0.308378
+Test Results - Avg accuracy: 0.64
+Training loss = 0.309184
+Test Results - Avg accuracy: 0.64
+Training loss = 0.304188
+Test Results - Avg accuracy: 0.64
+Training loss = 0.301790
+Test Results - Avg accuracy: 0.63
+Training loss = 0.299583
+Test Results - Avg accuracy: 0.65
+Training loss = 0.287150
+Test Results - Avg accuracy: 0.65
+Training loss = 0.295894
+Test Results - Avg accuracy: 0.64
+Best Accuracy: 0.6502
+Total time: 1164.4774820804596
+Losses successfully written into ./log/losses
+Results successfully written into ./log/results
