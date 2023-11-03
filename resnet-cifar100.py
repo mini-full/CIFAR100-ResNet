@@ -150,8 +150,6 @@ if __name__ == '__main__':
     # ignite handlers
     RunningAverage(output_transform=lambda x: x).attach(trainer, 'loss')
 
-    # log_file = open("./log/output.log", "w")
-    # pbar = ProgressBar(file=log_file)
     pbar = ProgressBar()
     pbar.attach(trainer, metric_names=['loss'])
 
