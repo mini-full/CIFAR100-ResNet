@@ -1,0 +1,155 @@
+Files already downloaded and verified
+Learning rate = 0.010000
+Training loss = 3.870365
+Test Results - Avg accuracy: 0.12
+Learning rate = 0.010000
+Training loss = 3.508605
+Test Results - Avg accuracy: 0.17
+Learning rate = 0.010000
+Training loss = 3.263978
+Test Results - Avg accuracy: 0.20
+Learning rate = 0.010000
+Training loss = 3.018237
+Test Results - Avg accuracy: 0.24
+Learning rate = 0.010000
+Training loss = 2.798800
+Test Results - Avg accuracy: 0.24
+Learning rate = 0.010000
+Training loss = 2.626950
+Test Results - Avg accuracy: 0.31
+Learning rate = 0.010000
+Training loss = 2.500253
+Test Results - Avg accuracy: 0.31
+Learning rate = 0.010000
+Training loss = 2.375997
+Test Results - Avg accuracy: 0.33
+Learning rate = 0.010000
+Training loss = 2.250521
+Test Results - Avg accuracy: 0.37
+Learning rate = 0.010000
+Training loss = 2.151942
+Test Results - Avg accuracy: 0.39
+Learning rate = 0.010000
+Training loss = 2.063842
+Test Results - Avg accuracy: 0.40
+Learning rate = 0.010000
+Training loss = 1.981524
+Test Results - Avg accuracy: 0.40
+Learning rate = 0.010000
+Training loss = 1.904071
+Test Results - Avg accuracy: 0.41
+Learning rate = 0.010000
+Training loss = 1.811710
+Test Results - Avg accuracy: 0.46
+Learning rate = 0.010000
+Training loss = 1.749884
+Test Results - Avg accuracy: 0.48
+Learning rate = 0.010000
+Training loss = 1.697826
+Test Results - Avg accuracy: 0.45
+Learning rate = 0.010000
+Training loss = 1.633308
+Test Results - Avg accuracy: 0.50
+Learning rate = 0.010000
+Training loss = 1.550691
+Test Results - Avg accuracy: 0.50
+Learning rate = 0.010000
+Training loss = 1.534437
+Test Results - Avg accuracy: 0.50
+Learning rate = 0.010000
+Training loss = 1.463342
+Test Results - Avg accuracy: 0.51
+Learning rate = 0.010000
+Training loss = 1.417665
+Test Results - Avg accuracy: 0.53
+Learning rate = 0.010000
+Training loss = 1.372401
+Test Results - Avg accuracy: 0.54
+Learning rate = 0.010000
+Training loss = 1.336360
+Test Results - Avg accuracy: 0.54
+Learning rate = 0.010000
+Training loss = 1.296977
+Test Results - Avg accuracy: 0.55
+Learning rate = 0.010000
+Training loss = 1.265189
+Test Results - Avg accuracy: 0.55
+Learning rate = 0.010000
+Training loss = 1.222822
+Test Results - Avg accuracy: 0.57
+Learning rate = 0.010000
+Training loss = 1.167542
+Test Results - Avg accuracy: 0.57
+Learning rate = 0.010000
+Training loss = 1.153287
+Test Results - Avg accuracy: 0.56
+Learning rate = 0.010000
+Training loss = 1.106353
+Test Results - Avg accuracy: 0.58
+Learning rate = 0.010000
+Training loss = 1.077002
+Test Results - Avg accuracy: 0.58
+Learning rate = 0.010000
+Training loss = 1.037550
+Test Results - Avg accuracy: 0.57
+Learning rate = 0.010000
+Training loss = 1.002549
+Test Results - Avg accuracy: 0.59
+Learning rate = 0.010000
+Training loss = 0.975490
+Test Results - Avg accuracy: 0.59
+Learning rate = 0.010000
+Training loss = 0.950928
+Test Results - Avg accuracy: 0.60
+Learning rate = 0.010000
+Training loss = 0.933576
+Test Results - Avg accuracy: 0.60
+Learning rate = 0.010000
+Training loss = 0.905791
+Test Results - Avg accuracy: 0.61
+Learning rate = 0.010000
+Training loss = 0.870935
+Test Results - Avg accuracy: 0.60
+Learning rate = 0.010000
+Training loss = 0.839603
+Test Results - Avg accuracy: 0.62
+Learning rate = 0.010000
+Training loss = 0.808396
+Test Results - Avg accuracy: 0.60
+Learning rate = 0.010000
+Training loss = 0.783616
+Test Results - Avg accuracy: 0.61
+Learning rate = 0.010000
+Training loss = 0.761109
+Test Results - Avg accuracy: 0.62
+Learning rate = 0.010000
+Training loss = 0.743904
+Test Results - Avg accuracy: 0.61
+Learning rate = 0.010000
+Training loss = 0.716604
+Test Results - Avg accuracy: 0.62
+Learning rate = 0.010000
+Training loss = 0.695189
+Test Results - Avg accuracy: 0.61
+Learning rate = 0.010000
+Training loss = 0.677528
+Test Results - Avg accuracy: 0.61
+Learning rate = 0.010000
+Training loss = 0.655177
+Test Results - Avg accuracy: 0.61
+Learning rate = 0.010000
+Training loss = 0.615629
+Test Results - Avg accuracy: 0.61
+Learning rate = 0.010000
+Training loss = 0.611393
+Test Results - Avg accuracy: 0.62
+Learning rate = 0.010000
+Training loss = 0.581152
+Test Results - Avg accuracy: 0.62
+Learning rate = 0.010000
+Training loss = 0.562865
+Test Results - Avg accuracy: 0.62
+Best Accuracy: 0.6247
+Total time: 987.2831768989563
+Losses successfully written into ./log/losses
+Results successfully written into ./log/results
