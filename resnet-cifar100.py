@@ -135,8 +135,8 @@ if __name__ == '__main__':
 
     # define model
     # model = resnet10(num_classes=100)
-    # model = resnet50(num_classes=100)
-    model = resnet18(num_classes=100)
+    model = resnet50(num_classes=100)
+    # model = resnet18(num_classes=100)
     model.to(device)
 
     # define loss and optimizer
