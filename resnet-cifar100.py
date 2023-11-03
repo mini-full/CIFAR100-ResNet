@@ -69,6 +69,12 @@ class ResNetCustom(ResNet):
 def resnet10(**kwargs):
     return ResNetCustom(BasicBlock, [1, 1, 1, 1], **kwargs)
 
+def resnet18(**kwargs):
+    return ResNetCustom(BasicBlock, [2, 2, 2, 2], **kwargs)
+
+def resnet50(**kwargs):
+    return ResNetCustom(BasicBlock, [3, 4, 6, 3], **kwargs)
+
 
 def logger(engine, model, evaluator, loader, pbar):
     evaluator.run(loader)
@@ -128,15 +134,16 @@ if __name__ == '__main__':
 
 
     # define model
-    model = resnet10(num_classes=100)
+    # model = resnet10(num_classes=100)
+    model = resnet50(num_classes=100)
     model.to(device)
 
     # define loss and optimizer
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(model.parameters(), lr=lr, momentum=0.9, weight_decay=0.0001)
     # optimizer = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=0.0001)
-    # torch_lr_scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=[30, 40], gamma = 0.1)
-    # scheduler = LRScheduler(torch_lr_scheduler)
+    torch_lr_scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=[40, 70], gamma = 0.1)
+    scheduler = LRScheduler(torch_lr_scheduler)
     # create ignite engines
     trainer = create_supervised_trainer(model=model,
                                         optimizer=optimizer,
@@ -153,7 +160,7 @@ if __name__ == '__main__':
     pbar = ProgressBar()
     pbar.attach(trainer, metric_names=['loss'])
 
-    # trainer.add_event_handler(Events.EPOCH_STARTED, scheduler)
+    trainer.add_event_handler(Events.EPOCH_STARTED, scheduler)
     
     # print lr at every epoch
     @trainer.on(Events.EPOCH_COMPLETED)
