@@ -7,7 +7,7 @@ import torchvision.transforms as transforms
 
 import pickle
 
-from torchvision.models.resnet import BasicBlock, Bottleneck, ResNet
+from torchvision.models.resnet import BasicBlock, ResNet, Bottleneck
 from ignite.engine import *
 from ignite.metrics import Accuracy, Loss
 from ignite.metrics import RunningAverage
@@ -65,6 +65,46 @@ class ResNetCustom(ResNet):
 
         return x
 
+class BottleNeck(nn.Module):
+    """Residual block for resnet over 50 layers
+    """
+    expansion = 4
+
+    def __init__(self, in_channels, out_channels, stride=1):
+        super(BottleNeck, self).__init__()
+        self.residual_branch = nn.Sequential(
+            nn.Conv2d(in_channels, out_channels, kernel_size=1, bias=False),
+            nn.BatchNorm2d(out_channels),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(out_channels,
+                      out_channels,
+                      stride=stride,
+                      kernel_size=3,
+                      padding=1,
+                      bias=False),
+            nn.BatchNorm2d(out_channels),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(out_channels,
+                      out_channels * BottleNeck.expansion,
+                      kernel_size=1,
+                      bias=False),
+            nn.BatchNorm2d(out_channels * BottleNeck.expansion),
+        )
+
+        self.shortcut = nn.Sequential()
+
+        if stride != 1 or in_channels != out_channels * BottleNeck.expansion:
+            self.shortcut = nn.Sequential(
+                nn.Conv2d(in_channels,
+                          out_channels * BottleNeck.expansion,
+                          stride=stride,
+                          kernel_size=1,
+                          bias=False),
+                nn.BatchNorm2d(out_channels * BottleNeck.expansion))
+
+    def forward(self, x):
+        return nn.ReLU(inplace=True)(self.residual_branch(x) +
+                                     self.shortcut(x))
 
 def resnet10(**kwargs):
     return ResNetCustom(BasicBlock, [1, 1, 1, 1], **kwargs)
@@ -73,7 +113,7 @@ def resnet18(**kwargs):
     return ResNetCustom(BasicBlock, [2, 2, 2, 2], **kwargs)
 
 def resnet50(**kwargs):
-    return ResNetCustom(Bottleneck, [3, 4, 6, 3], **kwargs)
+    return ResNetCustom(BottleNeck, [3, 4, 6, 3], **kwargs)
 
 
 def logger(engine, model, evaluator, loader, pbar):
