@@ -3,4 +3,4 @@ build/
 data/
 Traffic_sign/
 log/
-
+*.pth
