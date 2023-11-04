@@ -7,7 +7,7 @@ import torchvision.transforms as transforms
 
 import pickle
 
-from torchvision.models.resnet import BasicBlock, ResNet
+from torchvision.models.resnet import BasicBlock, Bottleneck, ResNet
 from ignite.engine import *
 from ignite.metrics import Accuracy, Loss
 from ignite.metrics import RunningAverage
@@ -73,7 +73,7 @@ def resnet18(**kwargs):
     return ResNetCustom(BasicBlock, [2, 2, 2, 2], **kwargs)
 
 def resnet50(**kwargs):
-    return ResNetCustom(BasicBlock, [3, 4, 6, 3], **kwargs)
+    return ResNetCustom(Bottleneck, [3, 4, 6, 3], **kwargs)
 
 
 def logger(engine, model, evaluator, loader, pbar):
@@ -122,8 +122,9 @@ if __name__ == '__main__':
         transforms.RandomCrop(32, padding=4),
         transforms.ToTensor(),
         transforms.Normalize(
-            (125.3 / 255.0, 123.0 / 255.0, 113.9 / 255.0),
-            (63.0 / 255.0, 62.1 / 255.0, 66.7 / 255.0))
+            # (125.3 / 255.0, 123.0 / 255.0, 113.9 / 255.0),
+            # (63.0 / 255.0, 62.1 / 255.0, 66.7 / 255.0))
+            (0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
     ])
 
     train_set = torchvision.datasets.CIFAR100(root=root, train=True,
@@ -143,16 +144,25 @@ if __name__ == '__main__':
     # model = resnet10(num_classes=100)
     model = resnet50(num_classes=100)
     # model = resnet18(num_classes=100)
+    # model = torchvision.models.resnet50(num_classes=100, pretrained=True)
+
+    # read model from file
+    model.load_state_dict(torch.load('./load/model.pth'))
+    modules = model.modules()
+    for p in modules:
+        if p._get_name()!= 'Linear':
+            p.requires_grad = False
     model.to(device)
+            
 
     # define loss and optimizer
-    criterion = nn.CrossEntropyLoss()
+    criterion = nn.CrossEntropyLoss().cuda()
     optimizer = torch.optim.SGD(model.parameters(), lr=lr, momentum=momentum, weight_decay=wd)
     # optimizer = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=0.0001)
     # optimizer = torch.optim.RMSprop(model.parameters(), lr=lr, weight_decay=0.0001)
-    torch_lr_scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=[30, 60, 80], gamma = gamma)
-    # torch_lr_scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=[30, 40], gamma = 0.1)
-    # scheduler = LRScheduler(torch_lr_scheduler)
+    # torch_lr_scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=[60, 120, 160], gamma = 0.2)
+    torch_lr_scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=[30, ], gamma = 0.1)
+    scheduler = LRScheduler(torch_lr_scheduler)
     # create ignite engines
     trainer = create_supervised_trainer(model=model,
                                         optimizer=optimizer,
@@ -169,7 +179,7 @@ if __name__ == '__main__':
     pbar = ProgressBar()
     pbar.attach(trainer, metric_names=['loss'])
 
-    # trainer.add_event_handler(Events.EPOCH_STARTED, scheduler)
+    trainer.add_event_handler(Events.EPOCH_STARTED, scheduler)
     
     # print lr at every epoch
     @trainer.on(Events.EPOCH_COMPLETED)
