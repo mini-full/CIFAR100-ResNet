@@ -4,3 +4,4 @@ data/
 Traffic_sign/
 log/
 *.pth
+load/

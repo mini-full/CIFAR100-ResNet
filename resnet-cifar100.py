@@ -9,7 +9,7 @@ import pickle
 
 from torchvision.models.resnet import BasicBlock, ResNet, Bottleneck
 from ignite.engine import *
-from ignite.metrics import Accuracy, Loss
+from ignite.metrics import Accuracy
 from ignite.metrics import RunningAverage
 from ignite.contrib.handlers import ProgressBar
 
@@ -65,47 +65,6 @@ class ResNetCustom(ResNet):
 
         return x
 
-class BottleNeck(nn.Module):
-    """Residual block for resnet over 50 layers
-    """
-    expansion = 4
-
-    def __init__(self, in_channels, out_channels, stride=1):
-        super(BottleNeck, self).__init__()
-        self.residual_branch = nn.Sequential(
-            nn.Conv2d(in_channels, out_channels, kernel_size=1, bias=False),
-            nn.BatchNorm2d(out_channels),
-            nn.ReLU(inplace=True),
-            nn.Conv2d(out_channels,
-                      out_channels,
-                      stride=stride,
-                      kernel_size=3,
-                      padding=1,
-                      bias=False),
-            nn.BatchNorm2d(out_channels),
-            nn.ReLU(inplace=True),
-            nn.Conv2d(out_channels,
-                      out_channels * BottleNeck.expansion,
-                      kernel_size=1,
-                      bias=False),
-            nn.BatchNorm2d(out_channels * BottleNeck.expansion),
-        )
-
-        self.shortcut = nn.Sequential()
-
-        if stride != 1 or in_channels != out_channels * BottleNeck.expansion:
-            self.shortcut = nn.Sequential(
-                nn.Conv2d(in_channels,
-                          out_channels * BottleNeck.expansion,
-                          stride=stride,
-                          kernel_size=1,
-                          bias=False),
-                nn.BatchNorm2d(out_channels * BottleNeck.expansion))
-
-    def forward(self, x):
-        return nn.ReLU(inplace=True)(self.residual_branch(x) +
-                                     self.shortcut(x))
-
 def resnet10(**kwargs):
     return ResNetCustom(BasicBlock, [1, 1, 1, 1], **kwargs)
 
@@ -113,7 +72,7 @@ def resnet18(**kwargs):
     return ResNetCustom(BasicBlock, [2, 2, 2, 2], **kwargs)
 
 def resnet50(**kwargs):
-    return ResNetCustom(BottleNeck, [3, 4, 6, 3], **kwargs)
+    return ResNetCustom(Bottleneck, [3, 4, 6, 3], **kwargs)
 
 
 def logger(engine, model, evaluator, loader, pbar):
@@ -201,7 +160,7 @@ if __name__ == '__main__':
     # optimizer = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=0.0001)
     # optimizer = torch.optim.RMSprop(model.parameters(), lr=lr, weight_decay=0.0001)
     # torch_lr_scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=[60, 120, 160], gamma = 0.2)
-    torch_lr_scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=[30, ], gamma = 0.1)
+    torch_lr_scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=[30, 40], gamma = 0.1)
     scheduler = LRScheduler(torch_lr_scheduler)
     # create ignite engines
     trainer = create_supervised_trainer(model=model,
