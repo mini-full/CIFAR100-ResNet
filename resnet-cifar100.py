@@ -101,6 +101,9 @@ if __name__ == '__main__':
                         help='learning rate')
     parser.add_argument('--device', required=False, default=0, type=int,
                         help='CUDA device id for GPU training')
+    parser.add_argument('--wd', required=False, default=0.0001, type=float, help='weight decay')
+    parser.add_argument('--momentum', required=False, default=0.9, type=float, help='momentum')
+    parser.add_argument('--gamma', required=False, default=0.1, type=float, help='gamma')
     options = parser.parse_args()
 
     root = options.root
@@ -108,6 +111,9 @@ if __name__ == '__main__':
     workers = options.workers
     epochs = options.epochs
     lr = options.lr
+    momentum = options.momentum
+    wd = options.wd
+    gamma = options.gamma
     device = 'cpu' if options.device is None \
         else torch.device('cuda:{}'.format(options.device))
 
@@ -115,7 +121,9 @@ if __name__ == '__main__':
         transforms.RandomHorizontalFlip(),
         transforms.RandomCrop(32, padding=4),
         transforms.ToTensor(),
-        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+        transforms.Normalize(
+            (125.3 / 255.0, 123.0 / 255.0, 113.9 / 255.0),
+            (63.0 / 255.0, 62.1 / 255.0, 66.7 / 255.0))
     ])
 
     train_set = torchvision.datasets.CIFAR100(root=root, train=True,
@@ -132,16 +140,17 @@ if __name__ == '__main__':
 
 
     # define model
-    model = resnet10(num_classes=100)
-    # model = resnet50(num_classes=100)
+    # model = resnet10(num_classes=100)
+    model = resnet50(num_classes=100)
     # model = resnet18(num_classes=100)
     model.to(device)
 
     # define loss and optimizer
     criterion = nn.CrossEntropyLoss()
-    optimizer = torch.optim.SGD(model.parameters(), lr=lr, momentum=0.9, weight_decay=0.0001)
+    optimizer = torch.optim.SGD(model.parameters(), lr=lr, momentum=momentum, weight_decay=wd)
     # optimizer = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=0.0001)
     # optimizer = torch.optim.RMSprop(model.parameters(), lr=lr, weight_decay=0.0001)
+    torch_lr_scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=[30, 60, 80], gamma = gamma)
     # torch_lr_scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=[30, 40], gamma = 0.1)
     # scheduler = LRScheduler(torch_lr_scheduler)
     # create ignite engines
@@ -192,3 +201,7 @@ if __name__ == '__main__':
     with open("./log/results", "wb") as fp:
         pickle.dump(results, fp)
     print("Results successfully written into ./log/results")
+
+    # save model
+    torch.save(model.state_dict(), './log/model.pth')
+    print("Model successfully written into ./log/model.pth")
