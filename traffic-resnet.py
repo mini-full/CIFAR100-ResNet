@@ -61,30 +61,37 @@ if __name__ == '__main__':
     device = 'cpu' if options.device < 0 else 'cuda:%d' % options.device
 
 
-    transform = transforms.Compose([
+    # data augmentation by AutoAugmentPolicy
+    train_transform = transforms.Compose([
+        transforms.Resize((224, 224)),
         transforms.RandomHorizontalFlip(),
-        transforms.RandomCrop(32, padding=4),
+        transforms.RandomRotation(10),
+        transforms.RandomAffine(0, shear=10, scale=(0.8, 1.2)),
         transforms.ToTensor(),
-        transforms.Normalize(
-            # (125.3 / 255.0, 123.0 / 255.0, 113.9 / 255.0),
-            # (63.0 / 255.0, 62.1 / 255.0, 66.7 / 255.0))
-            (0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+        # transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[
+        #                      0.229, 0.224, 0.225])
     ])
 
+    test_transform = transforms.Compose([
+        transforms.Resize((224, 224)),
+        transforms.ToTensor(),
+        # transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[
+        #                      0.229, 0.224, 0.225])
+    ])
     # load dataset
-    train_set = torchvision.datasets.ImageFolder(root=root + '/train_dataset', transform=transform)
+    train_set = torchvision.datasets.ImageFolder(root=root + '/train_dataset', transform=train_transform)
     train_loader = torch.utils.data.DataLoader(train_set, batch_size=bsize, shuffle=True, num_workers=workers)
-    test_set = torchvision.datasets.ImageFolder(root=root + '/test_dataset', transform=transform)
-    test_loader = torch.utils.data.DataLoader(test_set, batch_size=bsize, shuffle=False, num_workers=workers)
+    test_set = torchvision.datasets.ImageFolder(root=root + '/test_dataset', transform=test_transform)
+    test_loader = torch.utils.data.DataLoader(test_set, batch_size=bsize, shuffle=False, num_workers=workers)\
+    
 
 
     # define model
-    # model = resnet10(num_classes=10)
+    # model = resnet18(num_classes=10)
     # model = resnet50(num_classes=10)
     model = resnet34(num_classes=10)
 
     model.to(device)
-            
 
     # define loss and optimizer
     criterion = nn.CrossEntropyLoss().cuda()
