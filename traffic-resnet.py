@@ -8,7 +8,7 @@ import torchvision.transforms as transforms
 
 import pickle
 
-from torchvision.models.resnet import BasicBlock, ResNet, Bottleneck, resnet50, resnet18
+from torchvision.models.resnet import BasicBlock, ResNet, Bottleneck, resnet50, resnet18, resnet34
 from ignite.engine import *
 from ignite.metrics import Accuracy
 from ignite.metrics import RunningAverage
@@ -58,7 +58,8 @@ if __name__ == '__main__':
     momentum = options.momentum
     wd = options.wd
     gamma = options.gamma
-    device = 'cpu'
+    device = 'cpu' if options.device < 0 else 'cuda:%d' % options.device
+
 
     transform = transforms.Compose([
         transforms.RandomHorizontalFlip(),
@@ -71,33 +72,6 @@ if __name__ == '__main__':
     ])
 
     # load dataset
-
-    # data set structure, all the files are *.jpg
-    # - Traffic_sign
-    #     - train_dataset
-    #         - GuideSign
-    #         - M1
-    #         - M4
-    #         - M5
-    #         - M6
-    #         - M7
-    #         - P1
-    #         - P10_50
-    #         - P12
-    #         - W1
-    
-    #     - test_dataset
-    #         - GuideSign
-    #         - M1
-    #         - M4
-    #         - M5
-    #         - M6
-    #         - M7
-    #         - P1
-    #         - P10_50
-    #         - P12
-    #         - W1
-
     train_set = torchvision.datasets.ImageFolder(root=root + '/train_dataset', transform=transform)
     train_loader = torch.utils.data.DataLoader(train_set, batch_size=bsize, shuffle=True, num_workers=workers)
     test_set = torchvision.datasets.ImageFolder(root=root + '/test_dataset', transform=transform)
@@ -107,15 +81,8 @@ if __name__ == '__main__':
     # define model
     # model = resnet10(num_classes=10)
     # model = resnet50(num_classes=10)
-    model = resnet18(num_classes=10)
-    # model = torchvision.models.resnet50(num_classes=100, pretrained=True)
+    model = resnet34(num_classes=10)
 
-    # read model from file
-    # model.load_state_dict(torch.load('./load/model.pth'))
-    # modules = model.modules()
-    # for p in modules:
-    #     if p._get_name()!= 'Linear':
-    #         p.requires_grad = False
     model.to(device)
             
 
