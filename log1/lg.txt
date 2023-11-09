@@ -1,0 +1,35 @@
+Learning rate = 0.100000
+Training loss = 4.166307
+Test Results - Avg accuracy: 0.11
+Learning rate = 0.100000
+Training loss = 3.547876
+Test Results - Avg accuracy: 0.16
+Learning rate = 0.100000
+Training loss = 3.040293
+Test Results - Avg accuracy: 0.28
+Learning rate = 0.100000
+Training loss = 2.672430
+Test Results - Avg accuracy: 0.38
+Learning rate = 0.100000
+Training loss = 2.434642
+Test Results - Avg accuracy: 0.43
+Learning rate = 0.100000
+Training loss = 2.187155
+Test Results - Avg accuracy: 0.47
+Learning rate = 0.100000
+Training loss = 2.041238
+Test Results - Avg accuracy: 0.49
+Learning rate = 0.100000
+Training loss = 1.915290
+Test Results - Avg accuracy: 0.50
+Learning rate = 0.100000
+Training loss = 1.845417
+Test Results - Avg accuracy: 0.53
+Learning rate = 0.100000
+Training loss = 1.739561
+Test Results - Avg accuracy: 0.55
+Best Accuracy: 0.5534
+Total time: 3072.2365367412567
+Losses successfully written into ./log/losses
+Results successfully written into ./log/results
+Model successfully written into ./log/model.pth
